@@ -3,85 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Crocodile Facts</title>
+    <title>Crocodile Facts</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
         }
 
-        #fact-container {
-            max-width: 600px;
-            padding: 20px;
-            margin: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+        .fact-container {
             text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            overflow: hidden;
+        }
+
+        #fact-display {
+            font-size: 1.2em;
+            margin-bottom: 20px;
         }
 
         #fact-button {
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 1em;
             cursor: pointer;
-            background-color: #007BFF;
-            color: white;
             border: none;
             border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #007BFF;
+            color: white;
             transition: transform 0.3s ease;
         }
 
         #fact-button:hover {
             background-color: #0056b3;
         }
+
+        .moving {
+            position: relative;
+            animation: moveButton 0.5s ease;
+        }
+
+        @keyframes moveButton {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(20px, 20px); }
+        }
     </style>
 </head>
 <body>
-    <div id="fact-container">
-        <p id="fact"></p>
+    <div class="fact-container">
+        <p id="fact-display">Hover over the button to reveal a fact!</p>
+        <button id="fact-button">Show Random Fact</button>
     </div>
-    <button id="fact-button">Show Random Fact</button>
     <script>
         const facts = [
-            "Crocodiles are large aquatic reptiles that live throughout the tropics in Africa, Asia, the Americas, and Australia.",
-            "They are members of the order Crocodylia, which also includes alligators, caimans, and gharials.",
-            "Crocodiles have powerful jaws with many conical teeth and short legs with clawed webbed toes.",
-            "They are excellent swimmers and can hold their breath underwater for up to an hour.",
-            "Crocodiles are carnivorous and have a diet that includes fish, birds, mammals, and occasionally smaller crocodiles.",
-            "They have a unique heart structure with four chambers, which is more similar to birds and mammals than to other reptiles.",
-            "Crocodiles can live for more than 70 years in the wild.",
+            "Crocodiles have a unique heart structure with four chambers, which is more similar to birds and mammals than to other reptiles.",
             "They are known for their ambush hunting technique, where they wait for prey to come close before launching a surprise attack.",
-            "Crocodiles communicate with each other through vocalizations, including growls, hisses, and roars.",
-            "The largest species, the saltwater crocodile, can grow up to 23 feet long and weigh over 2,200 pounds."
+            "Crocodiles can live for more than 70 years in the wild.",
+            "The largest species, the saltwater crocodile, can grow up to 23 feet in length.",
+            "Crocodiles communicate with each other through vocalizations.",
+            "They have a powerful bite, with some species having a bite force of over 3,700 pounds per square inch.",
+            "Crocodiles are found in tropical regions of Africa, Asia, the Americas, and Australia.",
+            "They are excellent swimmers and can hold their breath underwater for up to an hour.",
+            "Crocodiles have a protective armor of bony plates and scales called osteoderms.",
+            "They are ectothermic, meaning they rely on external sources of heat to regulate their body temperature."
         ];
 
         let attempts = 0;
         const maxAttempts = 3;
-        const button = document.getElementById('fact-button');
-        const factContainer = document.getElementById('fact');
 
-        button.addEventListener('click', () => {
-            if (attempts >= maxAttempts) {
-                const randomIndex = Math.floor(Math.random() * facts.length);
-                factContainer.textContent = facts[randomIndex];
-            } else {
-                alert('Try again!');
+        document.getElementById('fact-button').addEventListener('mouseover', function() {
+            if (attempts < maxAttempts) {
+                this.classList.add('moving');
+                setTimeout(() => this.classList.remove('moving'), 500);
+                attempts++;
             }
         });
 
-        button.addEventListener('mouseover', () => {
-            if (attempts < maxAttempts) {
-                attempts++;
-                const randomX = Math.random() * (window.innerWidth - button.offsetWidth);
-                const randomY = Math.random() * (window.innerHeight - button.offsetHeight);
-                button.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        document.getElementById('fact-button').addEventListener('click', function() {
+            if (attempts >= maxAttempts) {
+                const randomIndex = Math.floor(Math.random() * facts.length);
+                document.getElementById('fact-display').textContent = facts[randomIndex];
             }
         });
     </script>
